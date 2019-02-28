@@ -1,37 +1,49 @@
-///
-/// \file 				StateMachine.h
-/// \author 			Geoffrey Hunter (www.mbedded.ninja) <gbmhunter@gmail.com>
-/// \edited             n/a
-/// \created			2017-04-15
-/// \last-modified		2018-03-19
-/// \brief 				Contains the StateMachine module.
-/// \details
-///		See README.md in root dir for more info.
+/*
+ * state.h
+ *
+ *  Created on: 27/02/2019
+ *      Author: chris
+ */
 
-#ifndef STATE_MACHINE_H
-#define STATE_MACHINE_H
+#ifndef STATE_MACHINE_STATE_H_
+#define STATE_MACHINE_STATE_H_
 
 typedef enum {
-    ST_IDLE,
-    ST_LED_ON,
-    ST_LED_OFF
-} state_t;
+	state_state1,
+	state_state2,
+	state_state3,
+} e_state;
+
+typedef enum {
+	event_Any,
+	event1,
+	event2,
+	event3,
+	event_no_event,
+} e_event;
+
+#define EVENT_FIFO_LENGTH 32
+typedef struct {
+	e_event event_fifo[EVENT_FIFO_LENGTH];
+	unsigned int newest_index;
+	unsigned int oldest_index;
+} eventStack_t;
+
+typedef enum {
+	eventStack_empty,
+	eventStack_full,
+	eventStack_ok,
+} eventStackStatus_t;
 
 typedef struct {
-    state_t currState;
+    e_state currState;
+    eventStack_t event;
+    /* Define any variables required here for state machine process */
 } stateMachine_t;
 
-/// \brief      All the possible events that can occur for this state machine.
-/// \details    Unlike states_t, these do not need to be kept in a special order.
-typedef enum {
-    EV_ANY,
-    EV_NONE,
-    EV_BUTTON_PUSHED,
-    EV_TIME_OUT,
-} event_t;
-
-void StateMachine_Init(stateMachine_t * stateMachine);
-void StateMachine_RunIteration(stateMachine_t *stateMachine, event_t event);
-const char * StateMachine_GetStateName(state_t state);
-
-#endif
+void StateMachine_Init(stateMachine_t* s);
+void StateMachine_Update(stateMachine_t *stateMachine);
+void StateMachine_SetEvent(stateMachine_t* s, e_event event);
+eventStackStatus_t StateMachine_WriteEvent(stateMachine_t* s, e_event event);
+eventStackStatus_t StateMachine_ReadEvent(stateMachine_t* s, e_event* event);
+#endif /* STATE_MACHINE_STATE_H_ */
