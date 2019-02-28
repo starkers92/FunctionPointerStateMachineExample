@@ -116,3 +116,8 @@ eventStackStatus_t StateMachine_ReadEvent(stateMachine_t* s, e_event* event) {
 	s->event.oldest_index = (s->event.oldest_index + 1) % EVENT_FIFO_LENGTH;
 	return eventStack_ok;
 }
+
+void StateMachine_EmptyEventQueue(stateMachine_t* s) {
+	s->event.newest_index=0;
+	s->event.oldest_index=0;
+}

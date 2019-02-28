@@ -46,4 +46,5 @@ void StateMachine_Update(stateMachine_t *stateMachine);
 void StateMachine_SetEvent(stateMachine_t* s, e_event event);
 eventStackStatus_t StateMachine_WriteEvent(stateMachine_t* s, e_event event);
 eventStackStatus_t StateMachine_ReadEvent(stateMachine_t* s, e_event* event);
+void StateMachine_EmptyEventQueue(stateMachine_t* s);
 #endif /* STATE_MACHINE_STATE_H_ */
